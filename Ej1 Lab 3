@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Función para fusionar dos arreglos en un solo arreglo ordenado
+void mergeAndSort(int* nums1, int m, int* nums2, int n, int* mergedArray) {
+    int i = 0, j = 0, k = 0;
+
+    // Fusionar los arreglos en orden
+    while (i < m && j < n) {
+        if (nums1[i] < nums2[j]) {
+            mergedArray[k++] = nums1[i++];
+        } else {
+            mergedArray[k++] = nums2[j++];
+        }
+    }
+
+    // Agregar los elementos restantes de nums1
+    while (i < m) {
+        mergedArray[k++] = nums1[i++];
+    }
+
+    // Agregar los elementos restantes de nums2
+    while (j < n) {
+        mergedArray[k++] = nums2[j++];
+    }
+}
+
+// Función para calcular la mediana
+double findMedian(int* mergedArray, int totalSize) {
+    if (totalSize % 2 == 0) {
+        return (mergedArray[totalSize / 2 - 1] + mergedArray[totalSize / 2]) / 2.0;
+    } else {
+        return mergedArray[totalSize / 2];
+    }
+}
+
+int main() {
+    // Ejemplo de entrada
+    int nums1[] = {1, 3};
+    int nums2[] = {2};
+    int m = sizeof(nums1) / sizeof(nums1[0]);
+    int n = sizeof(nums2) / sizeof(nums2[0]);
+
+    // Arreglo fusionado
+    int mergedArray[m + n];
+
+    // Medir el tiempo de ejecución
+    clock_t start, end;
+    double cpu_time_used;
+
+    start = clock();
+
+    // Fusionar y ordenar
+    mergeAndSort(nums1, m, nums2, n, mergedArray);
+
+    // Calcular la mediana
+    double median = findMedian(mergedArray, m + n);
+
+    end = clock();
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+    // Mostrar resultados
+    printf("Mediana: %.5f\n", median);
+    printf("Tiempo de ejecución: %f segundos\n", cpu_time_used);
+
+    return 0;
+}
